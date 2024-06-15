@@ -14,12 +14,12 @@ import { SimpleTable } from './components/simple-table/SimpleTable'
 const App = () => {
 	return (
 		<div className='App'>
-			<Sidebar>
-				<Routes>
-					<Route path='/' element={<SimpleTable />} />
-					<Route path='/web-site' element={<h2>My Website</h2>} />
-				</Routes>
-			</Sidebar>
+			<Sidebar />
+			<Routes>
+				<Route path='/' element={<SimpleTable />} />
+				<Route path='/web-site' element={<h2>My Website</h2>} />
+			</Routes>
+			{/* </Sidebar> */}
 		</div>
 	)
 }
