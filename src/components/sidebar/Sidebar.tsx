@@ -1,5 +1,6 @@
 import { ScrollArea } from '@mantine/core'
-import { IconGauge, IconNotes } from '@tabler/icons-react'
+import { Icon3dCubeSphere, IconGauge, IconNotes } from '@tabler/icons-react'
+import { ReactNode } from 'react'
 import classes from './Saidbar.module.css'
 import { LinksGroup } from './navbarLinkGroup/NavbarLinkGroup'
 
@@ -11,6 +12,16 @@ const mockdata = [
 			{ label: 'Fakultet', link: '/fakultet' },
 			{ label: 'Kafedra', link: '/kafedra' },
 			{ label: "Bo'lim", link: '/bolim' },
+		],
+	},
+	{
+		label: 'NamMQI',
+		// icon: IconBrandSuperhuman,
+		icon: Icon3dCubeSphere,
+		links: [
+			{ label: 'Xodimlar', link: '/xodimlar' },
+			{ label: 'Vakanlar', link: '/vakantlar' },
+			{ label: 'Talabalar', link: '/talabalar' },
 		],
 	},
 	{
@@ -30,15 +41,23 @@ const mockdata = [
 		],
 	},
 ]
+interface ComponentChildren {
+	children: ReactNode
+}
 
-export function Sidebar() {
+export function Sidebar({ children }: ComponentChildren) {
 	const links = mockdata.map(item => <LinksGroup {...item} key={item.label} />)
 
 	return (
-		<nav className={classes.navbar}>
-			<ScrollArea className={classes.links}>
-				<div className={classes.linksInner}>{links}</div>
-			</ScrollArea>
-		</nav>
+		<div className={classes.layout}>
+			<div className={classes.space}>
+				<nav className={classes.navbar}>
+					<ScrollArea className={classes.links}>
+						<div className={classes.linksInner}>{links}</div>
+					</ScrollArea>
+				</nav>
+			</div>
+			<div className={classes.content}>{children}</div>
+		</div>
 	)
 }

@@ -1,4 +1,18 @@
+.layout {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 10px;
+	margin-top: 10px;
+}
+.space {
+	height: 100dvh;
+	width: rem(300px);
+}
 .navbar {
+	position: fixed;
+	top: 0;
+	left: 0;
 	background-color: light-dark(
 		var(--mantine-color-white),
 		var(--mantine-color-dark-6)
@@ -39,4 +53,7 @@
 	margin-right: calc(var(--mantine-spacing-md) * -1);
 	border-top: rem(1px) solid
 		light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+.content {
+	flex: 1;
 }

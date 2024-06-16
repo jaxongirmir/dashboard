@@ -6,3 +6,9 @@
 a {
   text-decoration: none;
 }
+
+
+.mantine-Modal-title {
+  font-size: 23px;
+  font-weight: 600;
+}
