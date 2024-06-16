@@ -1,4 +1,3 @@
-// core styles are required for all packages
 import '@mantine/core/styles.css'
 import { Route, Routes } from 'react-router-dom'
 import { Sidebar } from './components/sidebar/Sidebar'

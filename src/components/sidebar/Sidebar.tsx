@@ -6,7 +6,7 @@ import { LinksGroup } from './navbarLinkGroup/NavbarLinkGroup'
 
 const mockdata = [
 	{
-		label: 'OTM strukturasi',
+		label: 'NamMQI',
 		icon: IconGauge,
 		links: [
 			{ label: 'Fakultet', link: '/fakultet' },
@@ -15,7 +15,7 @@ const mockdata = [
 		],
 	},
 	{
-		label: 'NamMQI',
+		label: 'OTM strukturasi',
 		// icon: IconBrandSuperhuman,
 		icon: Icon3dCubeSphere,
 		links: [
