@@ -60,6 +60,6 @@ export const modalData: {
 		placeholder: 'Ishga kirgan',
 		data: yearData,
 	},
-	{ p: 'EMAIL', type: 'Input', placeholder: 'joxa_muxa@gmail.com' },
 	{ p: 'TELEFON', type: 'Input', placeholder: '+998 90 222 05 36' },
+	{ p: '', type: 'Input', placeholder: '*********' },
 ]
