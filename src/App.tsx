@@ -19,8 +19,8 @@ const App = () => {
 		<div className='App'>
 			<Sidebar>
 				<Routes>
-					<Route path='/' element={<h2>My Website</h2>} />
-					<Route path='/fakultet' element={<Faculty />} />
+					{/* <Route path='/' element={<h2>My Website</h2>} /> */}
+					<Route path='/' element={<Faculty />} />
 					<Route path='xodimlar-bazasi' element={<UserPanel />} />
 					<Route path='xodimlar-royxati' element={<ListOFEmployees />} />
 					<Route path='kafedra' element={<Department />} />
