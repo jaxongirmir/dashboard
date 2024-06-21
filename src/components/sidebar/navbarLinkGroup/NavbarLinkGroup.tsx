@@ -7,8 +7,9 @@ import {
 	UnstyledButton,
 	rem,
 } from '@mantine/core'
-import { IconCalendarStats, IconChevronRight } from '@tabler/icons-react'
+import { IconChevronRight } from '@tabler/icons-react'
 import { FC, useState } from 'react'
+import { Link } from 'react-router-dom'
 import classes from './NavbarLinkGroup.module.css'
 
 interface LinksGroupProps {
@@ -27,12 +28,11 @@ export function LinksGroup({
 	const hasLinks = Array.isArray(links)
 	const [opened, setOpened] = useState(initiallyOpened || false)
 	const items = (hasLinks ? links : []).map(link => (
-		<Text<'a'>
-			component='a'
+		<Text
+			component={Link}
+			to={link.link}
 			className={classes.link}
-			href={link.link}
 			key={link.label}
-			onClick={event => event.preventDefault()}
 		>
 			{link.label}
 		</Text>
@@ -66,23 +66,5 @@ export function LinksGroup({
 			</UnstyledButton>
 			{hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
 		</>
-	)
-}
-
-const mockdata = {
-	label: 'Releases',
-	icon: IconCalendarStats,
-	links: [
-		{ label: 'Upcoming releases', link: '/' },
-		{ label: 'Previous releases', link: '/' },
-		{ label: 'Releases schedule', link: '/' },
-	],
-}
-
-export function NavbarLinksGroup() {
-	return (
-		<Box mih={220} p='md'>
-			<LinksGroup {...mockdata} />
-		</Box>
 	)
 }

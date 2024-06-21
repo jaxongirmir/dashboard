@@ -1,77 +1,65 @@
-import { Table } from '@mantine/core'
+import { ScrollArea, Table } from '@mantine/core'
+import cx from 'clsx'
+import { Dispatch, FC, SetStateAction, useState } from 'react'
+import styles from './SimpleTable.module.css'
 
-export const SimpleTable = () => {
-	const ths: string[] = ['Name', 'Status', 'Connect', 'Scolarship']
-	const rows: {
-		name: string
-		status: string
-		connect: string
-		scolarship: string
-	}[] = [
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-		{ name: 'home', status: 'fail', connect: 'Bind', scolarship: 'school' },
-	]
+interface ITableProps {
+	style?: string
+	tableData: {
+		title: string
+		values: (string | JSX.Element)[]
+		width?: string
+	}[]
+	setClick: Dispatch<SetStateAction<string | null>>
+}
+
+export const SimpleTable: FC<ITableProps> = ({
+	style,
+	tableData,
+	setClick,
+}) => {
+	const maxLength = Math.max(...tableData.map(item => item.values.length))
+
+	const [scrolled, setScrolled] = useState<boolean>(false)
 	return (
-		<Table striped highlightOnHover withTableBorder withColumnBorders>
-			<Table.Thead>
-				<Table.Tr>
-					{ths.map((el, inx) => (
-						<Table.Th key={inx}>{el}</Table.Th>
+		<ScrollArea
+			h={'100dvh'}
+			onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+		>
+			<Table
+				striped
+				highlightOnHover
+				withTableBorder
+				withColumnBorders
+				style={{ width: style && style }}
+			>
+				<Table.Thead
+					className={cx(styles.header, { [styles.scrolled]: scrolled })}
+				>
+					<Table.Tr>
+						<Table.Th w={70} style={{ textAlign: 'center' }}>
+							N&
+						</Table.Th>
+						{tableData.map((el, inx) => (
+							<Table.Th key={inx} style={{ textAlign: 'center' }}>
+								{el.title}
+							</Table.Th>
+						))}
+					</Table.Tr>
+				</Table.Thead>
+				<Table.Tbody>
+					{Array.from({ length: maxLength }).map((_, rowIndex) => (
+						<Table.Tr style={{ textAlign: 'center' }} key={rowIndex}>
+							<Table.Td>{rowIndex + 1}</Table.Td> {/* Display the row count */}
+							{tableData.map((col, colIndex) => (
+								<Table.Td width={col?.width} key={colIndex}>
+									{col.values[rowIndex] || ''}
+								</Table.Td>
+							))}
+						</Table.Tr>
 					))}
-				</Table.Tr>
-			</Table.Thead>
-			{rows.map((row, inx) => (
-				<Table.Tbody key={inx}>
-					<Table.Td>{row.name}</Table.Td>
-					<Table.Td>{row.connect}</Table.Td>
-					<Table.Td>{row.status}</Table.Td>
-					<Table.Td>{row.scolarship}</Table.Td>
 				</Table.Tbody>
-			))}
-		</Table>
+			</Table>
+		</ScrollArea>
 	)
 }
