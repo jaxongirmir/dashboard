@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { SimpleTable } from '../../components/simple-table/SimpleTable'
 import { SwitchThumbButton } from '../../ui/buttons/SwitchThumbButton'
@@ -9,9 +9,8 @@ type TTableData = {
 }[]
 
 const ListOFEmployees: FC = () => {
-	const [click, setClick] = useState<string | null>(null)
+	// const [click, setClick] = useState<string | null>(null)
 	const { pathname } = useLocation()
-	console.log(click)
 
 	const TableData: TTableData = [
 		{
@@ -100,7 +99,7 @@ const ListOFEmployees: FC = () => {
 					<span> {pathname.slice(1)}</span>
 				</p>
 			</div>
-			<SimpleTable tableData={TableData} setClick={setClick} />
+			<SimpleTable tableData={TableData}  />
 		</>
 	)
 }

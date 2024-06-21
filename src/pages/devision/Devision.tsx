@@ -15,11 +15,10 @@ type TData = string[]
 
 export const Devision: FC = () => {
 	const [code, setCode] = useState<string>('')
-	const [click, setClick] = useState<string | null>(null)
+	// const [click, setClick] = useState<string | null>(null)
 	const [changeDevision, setChangeDevision] = useState<boolean>(false)
 	const { pathname } = useLocation()
 	const data: TData = ['Boshqa', "Bo'lim", 'Boshqarma', 'Markaz', 'Rektorat']
-	console.log(click)
 	useEffect(() => {
 		setChangeDevision(false)
 	}, [])
@@ -165,7 +164,7 @@ export const Devision: FC = () => {
 			</div>
 			<div className='layout'>
 				<div className='right'>
-					<SimpleTable style='100%' tableData={TableData} setClick={setClick} />
+					<SimpleTable style='100%' tableData={TableData} />
 				</div>
 				<div className='left'>
 					<div className='create_change'>

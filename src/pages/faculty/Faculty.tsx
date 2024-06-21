@@ -21,9 +21,8 @@ export const Faculty = () => {
 
 	const data: TData = ['Mahalliy', 'Qo‘shma', 'Bo‘lim', 'Boshqa']
 	const [code, setCode] = useState<TCode>('')
-	const [click, setClick] = useState<string | null>(null)
+	// const [click, setClick] = useState<string | null>(null)
 	const [changeFaculty, setChangeFaculty] = useState<boolean>(false)
-	console.log(click)
 
 	useEffect(() => {
 		setChangeFaculty(false)
@@ -170,7 +169,7 @@ export const Faculty = () => {
 			</div>
 			<div className='layout'>
 				<div className='right'>
-					<SimpleTable style='100%' tableData={TableData} setClick={setClick} />
+					<SimpleTable style='100%' tableData={TableData} />
 				</div>
 				<div className='left'>
 					<div className='create_change'>

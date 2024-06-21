@@ -1,6 +1,6 @@
 import { ScrollArea, Table } from '@mantine/core'
 import cx from 'clsx'
-import { Dispatch, FC, SetStateAction, useState } from 'react'
+import { FC, useState } from 'react'
 import styles from './SimpleTable.module.css'
 
 interface ITableProps {
@@ -10,13 +10,13 @@ interface ITableProps {
 		values: (string | JSX.Element)[]
 		width?: string
 	}[]
-	setClick: Dispatch<SetStateAction<string | null>>
+	// setClick: Dispatch<SetStateAction<string | null>>
 }
 
 export const SimpleTable: FC<ITableProps> = ({
 	style,
 	tableData,
-	setClick,
+	// setClick,
 }) => {
 	const maxLength = Math.max(...tableData.map(item => item.values.length))
 

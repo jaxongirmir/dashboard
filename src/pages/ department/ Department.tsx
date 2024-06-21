@@ -1,6 +1,6 @@
 import { Button, Input } from '@mantine/core'
 import { IconCheck, IconTrash, IconX } from '@tabler/icons-react'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { SimpleTable } from '../../components/simple-table/SimpleTable'
 import { handleChange } from '../../hooks/facultyCodeFormat'
@@ -14,9 +14,12 @@ type TTableData = {
 type TData = string[]
 export const Department: FC = () => {
 	const [code, setCode] = useState<string>('')
-	const [click, setClick] = useState<string | null>(null)
+	// const [click, setClick] = useState<string | null>(null)
 	const [changeDepartment, setChangeDepartment] = useState<boolean>(false)
 	const { pathname } = useLocation()
+	useEffect(() => {
+		setChangeDepartment(false)
+	}, [])
 	const data: TData = [
 		'Iqtisodiyot va boshqaruv',
 		'Energetika va mehnat muhofazasi',
@@ -168,7 +171,7 @@ export const Department: FC = () => {
 			</div>
 			<div className='layout'>
 				<div className='right'>
-					<SimpleTable style='100%' tableData={TableData} setClick={setClick} />
+					<SimpleTable style='100%' tableData={TableData} />
 				</div>
 				<div className='left'>
 					<div className='create_change'>
