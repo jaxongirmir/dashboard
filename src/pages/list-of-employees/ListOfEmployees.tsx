@@ -11,6 +11,7 @@ type TTableData = {
 const ListOFEmployees: FC = () => {
 	const [click, setClick] = useState<string | null>(null)
 	const { pathname } = useLocation()
+	console.log(click)
 
 	const TableData: TTableData = [
 		{

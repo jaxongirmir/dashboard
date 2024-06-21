@@ -1,6 +1,6 @@
 import { Button, Input } from '@mantine/core'
 import { IconCheck, IconTrash, IconX } from '@tabler/icons-react'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { SimpleTable } from '../../components/simple-table/SimpleTable'
 import { handleChange } from '../../hooks/facultyCodeFormat'
@@ -19,7 +19,10 @@ export const Devision: FC = () => {
 	const [changeDevision, setChangeDevision] = useState<boolean>(false)
 	const { pathname } = useLocation()
 	const data: TData = ['Boshqa', "Bo'lim", 'Boshqarma', 'Markaz', 'Rektorat']
-
+	console.log(click)
+	useEffect(() => {
+		setChangeDevision(false)
+	}, [])
 	const TableData: TTableData = [
 		{
 			title: 'Kod',
