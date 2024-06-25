@@ -7,7 +7,7 @@ import { UserPanel } from './pages/user-panel/UserPanel'
 // other css files are required only if
 // you are using components from the corresponding package
 import '@mantine/dates/styles.css'
-import { Department } from './pages/ department/ Department'
+import { Department } from './pages/department/Department'
 import { Devision } from './pages/devision/Devision'
 import ListOFEmployees from './pages/list-of-employees/ListOfEmployees'
 // import '@mantine/dropzone/styles.css';

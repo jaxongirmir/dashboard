@@ -5,7 +5,7 @@ export const mockdata = [
 		label: 'NamMQI',
 		icon: IconGauge,
 		links: [
-			{ label: 'Fakultet', link: '/fakultet' },
+			{ label: 'Fakultet', link: '/' },
 			{ label: 'Kafedra', link: '/kafedra' },
 			{ label: "Bo'lim", link: '/bolim' },
 		],

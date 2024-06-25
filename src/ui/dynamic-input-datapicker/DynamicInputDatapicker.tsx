@@ -5,11 +5,15 @@ import { IconCalendar } from '@tabler/icons-react'
 interface ComponentProps {
 	placeholder: string
 	label: string
+	value: any
+	setValue: any
 }
 
 export const DynamicInputDatapciker = ({
 	placeholder,
 	label,
+	value,
+	setValue,
 }: ComponentProps) => {
 	const icon = (
 		<IconCalendar style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
@@ -20,10 +24,12 @@ export const DynamicInputDatapciker = ({
 			clearable
 			defaultValue={new Date()}
 			label={label}
-			placeholder={placeholder}
+			placeholder={'yilingizni tanlang'}
+			value={value}
+			onChange={e => setValue(e)}
 			leftSection={icon}
 			leftSectionPointerEvents='none'
-			style={{ width: '300px' }}
+			style={{ width: '250px' }}
 		/>
 	)
 }

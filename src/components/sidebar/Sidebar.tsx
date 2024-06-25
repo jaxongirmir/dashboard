@@ -1,4 +1,4 @@
-import { ScrollArea } from '@mantine/core'
+ import { ScrollArea } from '@mantine/core'
 import { ReactNode } from 'react'
 import classes from './Saidbar.module.css'
 import { LinksGroup } from './navbarLinkGroup/NavbarLinkGroup'

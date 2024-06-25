@@ -1,14 +1,15 @@
 import { Button, Input } from '@mantine/core'
+import { useForm } from '@mantine/form'
 import { IconCheck, IconTrash, IconX } from '@tabler/icons-react'
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { SimpleTable } from '../../components/simple-table/SimpleTable'
-import { handleChange } from '../../hooks/facultyCodeFormat'
 import { SwitchThumbButton } from '../../ui/buttons/SwitchThumbButton'
 import { DynamicSelect } from '../../ui/dynamic-select/DynamicSelect'
+import { MAIN_URL } from '../../url/url'
 
 type TData = string[]
-type TCode = string
 type TTableData = {
 	title: string
 	values: (string | JSX.Element)[]
@@ -17,16 +18,22 @@ type TTableData = {
 
 export const Faculty = () => {
 	const { pathname } = useLocation()
-	console.log(pathname)
 
 	const data: TData = ['Mahalliy', 'Qo‘shma', 'Bo‘lim', 'Boshqa']
-	const [code, setCode] = useState<TCode>('')
-	// const [click, setClick] = useState<string | null>(null)
 	const [changeFaculty, setChangeFaculty] = useState<boolean>(false)
+
+	const form = useForm({
+		initialValues: {
+			name: '',
+			code: '',
+			type: '',
+		},
+	})
 
 	useEffect(() => {
 		setChangeFaculty(false)
 	}, [])
+
 	const TableData: TTableData = [
 		{
 			title: 'Kod',
@@ -158,6 +165,36 @@ export const Faculty = () => {
 			],
 		},
 	]
+	const first = (type: any) => {
+		switch (type) {
+			case 'Mahalliy':
+				return 'local'
+			case 'Qo‘shma':
+				return 'joint'
+			case 'Bo‘lim':
+				return 'division'
+			case 'Boshqa':
+				return 'other'
+			default:
+				break
+		}
+	}
+
+	const handleSubmit = (values: any) => {
+		console.log('Form values:', values)
+		const facultyData = {
+			name: values.name,
+			code: values.code,
+			type: first(values.type),
+		}
+		// Add your form submission logic here
+		axios.post(`${MAIN_URL}/faculties/`, facultyData).then(res => {
+			console.log(res)
+			values.name = ''
+			values.code = ''
+			values.type = ''
+		})
+	}
 
 	return (
 		<>
@@ -172,17 +209,25 @@ export const Faculty = () => {
 					<SimpleTable style='100%' tableData={TableData} />
 				</div>
 				<div className='left'>
-					<div className='create_change'>
+					<form
+						onSubmit={form.onSubmit(handleSubmit)}
+						className='create_change'
+					>
 						<div className='line'>
 							<p>Nomi</p>
-							<Input placeholder='Fakultet nomini kiriting' />
+							<Input
+								placeholder='Fakultet nomini kiriting'
+								{...form.getInputProps('name')}
+							/>
 						</div>
 						<div className='line'>
 							<p>Kod</p>
 							<Input
 								placeholder='Fakultet kodini kiriting'
-								value={code}
-								onChange={e => handleChange({ e, setCode, count: 3 })}
+								value={form.values.code}
+								onChange={e =>
+									form.setFieldValue('code', e.currentTarget.value)
+								}
 							/>
 						</div>
 						<div className='line'>
@@ -191,29 +236,31 @@ export const Faculty = () => {
 								label=''
 								data={data}
 								placeholder='Fakultet turini tanlang'
+								value={form.values.type}
+								setValue={(value: any) => form.setFieldValue('type', value)}
 							/>
 						</div>
 						{!changeFaculty ? (
-							<Button>
+							<Button type='submit'>
 								<IconCheck />
 								Saqlash
 							</Button>
 						) : (
 							<div className='btns'>
-								<Button color='gray'>
+								<Button color='gray' onClick={() => setChangeFaculty(false)}>
 									<IconX />
 									Bekor
 								</Button>
 								<Button color='red'>
 									<IconTrash /> Ochirish
 								</Button>
-								<Button>
+								<Button type='submit'>
 									<IconCheck />
 									Saqlash
 								</Button>
 							</div>
 						)}
-					</div>
+					</form>
 				</div>
 			</div>
 		</>

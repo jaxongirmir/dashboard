@@ -7,12 +7,14 @@ interface ComponentWithChildren {
 	children: ReactNode
 	title: string
 	buttonName: string
+	modalClose: boolean
 }
 
 export const DynamicModal = ({
 	children,
 	title,
 	buttonName,
+	modalClose,
 }: ComponentWithChildren) => {
 	const [opened, { open, close }] = useDisclosure(false)
 
@@ -20,7 +22,7 @@ export const DynamicModal = ({
 		<>
 			<Modal
 				opened={opened}
-				onClose={close}
+				onClose={close || modalClose}
 				title={title}
 				centered
 				size={'80%'}

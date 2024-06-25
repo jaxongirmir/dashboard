@@ -1,1 +1,1 @@
-export const MAIN_URL: string = 'https://donstroy-api-production.up.railway.app'
+export const MAIN_URL: string = 'https://diplom-production-49b4.up.railway.app'

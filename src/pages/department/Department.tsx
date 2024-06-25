@@ -1,25 +1,24 @@
 import { Button, Input } from '@mantine/core'
+import { useForm } from '@mantine/form'
 import { IconCheck, IconTrash, IconX } from '@tabler/icons-react'
 import { FC, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { SimpleTable } from '../../components/simple-table/SimpleTable'
-import { handleChange } from '../../hooks/facultyCodeFormat'
 import { SwitchThumbButton } from '../../ui/buttons/SwitchThumbButton'
 import { DynamicSelect } from '../../ui/dynamic-select/DynamicSelect'
+
 type TTableData = {
 	title: string
 	values: (string | JSX.Element)[]
 	width?: string
 }[]
+
 type TData = string[]
+
 export const Department: FC = () => {
-	const [code, setCode] = useState<string>('')
-	// const [click, setClick] = useState<string | null>(null)
-	const [changeDepartment, setChangeDepartment] = useState<boolean>(false)
 	const { pathname } = useLocation()
-	useEffect(() => {
-		setChangeDepartment(false)
-	}, [])
+	const [changeDepartment, setChangeDepartment] = useState<boolean>(false)
+
 	const data: TData = [
 		'Iqtisodiyot va boshqaruv',
 		'Energetika va mehnat muhofazasi',
@@ -29,6 +28,18 @@ export const Department: FC = () => {
 		'Sanoatni axborotlashtirish',
 		'Qurilish',
 	]
+
+	const form = useForm({
+		initialValues: {
+			name: '',
+			code: '',
+			type: '',
+		},
+	})
+
+	useEffect(() => {
+		setChangeDepartment(false)
+	}, [])
 
 	const TableData: TTableData = [
 		{
@@ -161,6 +172,12 @@ export const Department: FC = () => {
 			],
 		},
 	]
+
+	const handleSubmit = (values: any) => {
+		console.log('Form values:', values)
+		// Add your form submission logic here
+	}
+
 	return (
 		<>
 			<div className='title'>
@@ -174,44 +191,58 @@ export const Department: FC = () => {
 					<SimpleTable style='100%' tableData={TableData} />
 				</div>
 				<div className='left'>
-					<div className='create_change'>
+					<form
+						onSubmit={form.onSubmit(handleSubmit)}
+						className='create_change'
+					>
 						<div className='line'>
 							<p>Nomi</p>
-							<Input placeholder='Kafedrani nomini kiriting' />
+							<Input
+								placeholder='Kafedrani nomini kiriting'
+								{...form.getInputProps('name')}
+							/>
 						</div>
 						<div className='line'>
 							<p>Kod</p>
 							<Input
 								placeholder='Kafedrani kodini kiriting'
-								value={code}
-								onChange={e => handleChange({ e, setCode, count: 2 })}
+								value={form.values.code}
+								onChange={e =>
+									form.setFieldValue('code', e.currentTarget.value)
+								}
 							/>
 						</div>
 						<div className='line'>
 							<p>Turi</p>
-							<DynamicSelect label='' data={data} placeholder='Fakultet' />
+							<DynamicSelect
+								label=''
+								data={data}
+								placeholder='Fakultet'
+								value={form.values.type}
+								setValue={(value: any) => form.setFieldValue('type', value)}
+							/>
 						</div>
 						{!changeDepartment ? (
-							<Button>
+							<Button type='submit'>
 								<IconCheck />
 								Saqlash
 							</Button>
 						) : (
 							<div className='btns'>
-								<Button color='gray'>
+								<Button color='gray' onClick={() => setChangeDepartment(false)}>
 									<IconX />
 									Bekor
 								</Button>
 								<Button color='red'>
 									<IconTrash /> Ochirish
 								</Button>
-								<Button>
+								<Button type='submit'>
 									<IconCheck />
 									Saqlash
 								</Button>
 							</div>
 						)}
-					</div>
+					</form>
 				</div>
 			</div>
 		</>
