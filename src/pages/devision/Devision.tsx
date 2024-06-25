@@ -14,13 +14,17 @@ export const Devision: FC = () => {
 	const [scrolled, setScrolled] = useState<boolean>(false)
 	const [getData, setGetData] = useState([])
 	const { pathname } = useLocation()
-	const [selectData, setSelectData] = useState([])
+	const selectData = ['division', 'administration', 'center', 'other']
+
 	const form = useForm({
-		initialValues: { name: '', code: '', type: '' },
+		initialValues: { name: '', code: '', type: '', active: true },
 		validate: {
-			name: (value) => (value.length < 2 ? "Name must have at least 2 letters" : null),
-			code: (value) => (value.length !== 2 ? "Code must have exactly 2 characters" : null),
-			type: (value) => (value.length < 2 ? "Type must have at least 2 letters" : null),
+			name: value =>
+				value.length < 2 ? 'Name must have at least 2 letters' : null,
+			code: value =>
+				value.length !== 2 ? 'Code must have exactly 2 characters' : null,
+			type: value =>
+				value.length < 2 ? 'Type must have at least 2 letters' : null,
 		},
 	})
 
@@ -34,7 +38,12 @@ export const Devision: FC = () => {
 		})
 	}, [])
 
-	const handleSubmit = async (values: { name: string; code: string; type: string }) => {
+	const handleSubmit = async (values: {
+		name: string
+		code: string
+		type: string
+		active: boolean
+	}) => {
 		try {
 			const response = await axios.post(`${MAIN_URL}/divisions/`, values)
 			console.log('Data submitted successfully:', response.data)
@@ -76,7 +85,7 @@ export const Devision: FC = () => {
 										<Table.Td>{el.name}</Table.Td>
 										<Table.Td>{el.type}</Table.Td>
 										<Table.Td style={{ width: '20px' }}>
-											<SwitchThumbButton checked={el.active}  />
+											<SwitchThumbButton checked={el.active} />
 										</Table.Td>
 									</Table.Tr>
 								))}
@@ -85,7 +94,10 @@ export const Devision: FC = () => {
 					</ScrollArea>
 				</div>
 				<div className='left'>
-					<form className='create_change' onSubmit={form.onSubmit(handleSubmit)}>
+					<form
+						className='create_change'
+						onSubmit={form.onSubmit(handleSubmit)}
+					>
 						<div className='line'>
 							<p>Nomi</p>
 							<Input
@@ -102,14 +114,20 @@ export const Devision: FC = () => {
 						</div>
 						<div className='line'>
 							<p>Turi</p>
-							{/* <Input
+							<DynamicSelect
+								data={selectData}
+								label=''
 								placeholder='Turini tanlang'
-								{...form.getInputProps('type')}
-							/> */}
-							<DynamicSelect data={} />
+								value={form.values.type}
+								setValue={(value: string) => form.setFieldValue('type', value)}
+							/>
+						</div>
+						<div className='line'>
+							<p>Active</p>
+							<SwitchThumbButton checked={form.values.active} />
 						</div>
 						{!changeDevision ? (
-							<Button type="submit">
+							<Button type='submit'>
 								<IconCheck />
 								Saqlash
 							</Button>
@@ -122,7 +140,7 @@ export const Devision: FC = () => {
 								<Button color='red'>
 									<IconTrash /> Ochirish
 								</Button>
-								<Button type="submit">
+								<Button type='submit'>
 									<IconCheck />
 									Saqlash
 								</Button>
