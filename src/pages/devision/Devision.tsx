@@ -5,20 +5,19 @@ import { Link, useLocation } from 'react-router-dom'
 import { SimpleTable } from '../../components/simple-table/SimpleTable'
 import { handleChange } from '../../hooks/facultyCodeFormat'
 import { SwitchThumbButton } from '../../ui/buttons/SwitchThumbButton'
-import { DynamicSelect } from '../../ui/dynamic-select/DynamicSelect'
 type TTableData = {
 	title: string
 	values: (string | JSX.Element)[]
 	width?: string
 }[]
-type TData = string[]
+// type TData = string[]
 
 export const Devision: FC = () => {
 	const [code, setCode] = useState<string>('')
 	// const [click, setClick] = useState<string | null>(null)
 	const [changeDevision, setChangeDevision] = useState<boolean>(false)
 	const { pathname } = useLocation()
-	const data: TData = ['Boshqa', "Bo'lim", 'Boshqarma', 'Markaz', 'Rektorat']
+	// const data: TData = ['Boshqa', "Bo'lim", 'Boshqarma', 'Markaz', 'Rektorat']
 	useEffect(() => {
 		setChangeDevision(false)
 	}, [])
@@ -182,7 +181,7 @@ export const Devision: FC = () => {
 						</div>
 						<div className='line'>
 							<p>Turi</p>
-							<DynamicSelect label='' data={data} placeholder="Bo'lim turi" />
+							{/* <DynamicSelect label='' data={data} placeholder="Bo'lim turi"  /> */}
 						</div>
 						{!changeDevision ? (
 							<Button>

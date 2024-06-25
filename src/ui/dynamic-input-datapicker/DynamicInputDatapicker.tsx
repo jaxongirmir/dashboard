@@ -24,7 +24,7 @@ export const DynamicInputDatapciker = ({
 			clearable
 			defaultValue={new Date()}
 			label={label}
-			placeholder={'yilingizni tanlang'}
+			placeholder={placeholder}
 			value={value}
 			onChange={e => setValue(e)}
 			leftSection={icon}
