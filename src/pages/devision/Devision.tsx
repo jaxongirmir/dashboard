@@ -1,157 +1,48 @@
-import { Button, Input } from '@mantine/core'
+import { Button, Input, ScrollArea, Table } from '@mantine/core'
+import { useForm } from '@mantine/form'
 import { IconCheck, IconTrash, IconX } from '@tabler/icons-react'
+import axios from 'axios'
+import cx from 'clsx'
 import { FC, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { SimpleTable } from '../../components/simple-table/SimpleTable'
-import { handleChange } from '../../hooks/facultyCodeFormat'
 import { SwitchThumbButton } from '../../ui/buttons/SwitchThumbButton'
-type TTableData = {
-	title: string
-	values: (string | JSX.Element)[]
-	width?: string
-}[]
-// type TData = string[]
+import { DynamicSelect } from '../../ui/dynamic-select/DynamicSelect'
+import { MAIN_URL } from '../../url/url'
 
 export const Devision: FC = () => {
-	const [code, setCode] = useState<string>('')
-	// const [click, setClick] = useState<string | null>(null)
 	const [changeDevision, setChangeDevision] = useState<boolean>(false)
+	const [scrolled, setScrolled] = useState<boolean>(false)
+	const [getData, setGetData] = useState([])
 	const { pathname } = useLocation()
-	// const data: TData = ['Boshqa', "Bo'lim", 'Boshqarma', 'Markaz', 'Rektorat']
+	const [selectData, setSelectData] = useState([])
+	const form = useForm({
+		initialValues: { name: '', code: '', type: '' },
+		validate: {
+			name: (value) => (value.length < 2 ? "Name must have at least 2 letters" : null),
+			code: (value) => (value.length !== 2 ? "Code must have exactly 2 characters" : null),
+			type: (value) => (value.length < 2 ? "Type must have at least 2 letters" : null),
+		},
+	})
+
 	useEffect(() => {
 		setChangeDevision(false)
 	}, [])
-	const TableData: TTableData = [
-		{
-			title: 'Kod',
-			values: [
-				'22',
-				'23',
-				'21',
-				'02',
-				'21',
-				'13',
-				'45',
-				'37',
-				'22',
-				'23',
-				'21',
-				'02',
-				'21',
-				'13',
-				'45',
-				'37',
-				'22',
-				'23',
-				'21',
-				'02',
-				'21',
-				'13',
-				'45',
-				'37',
-				'22',
-				'37',
-				'22',
-			],
-		},
-		{
-			title: 'Nomi',
-			values: [
-				'Institut xotin - qizlar maslahat kengashi',
-				"Ta'lim sifatini nazorat qilish bo’limi",
-				'Xalqaro hamkorlik bo’limi',
-				"Sirtqi bo'lim",
-				"O'quv uslubiy boshqarma",
-				'Marketing va talabalar amaliyoti bo’limi',
-				"Magistratura bo'limi",
-				'Iqtidorli talabalarning ilmiy-tadqiqot faoliyatini tashkil etish bo‘limi',
-				"Yoshlar bilan ishlash, ma'naviyat va ma'rifat bo'limi",
-				'Ilmiy va ilmiy pedagogik kadrlar tayyorlash',
-				"Xodimlar bo'limi",
-				"Devonxona bo'limi",
-				'Axbоrоt-resurs markazi',
-				"Raqamli ta'lim texnologiya markazi",
-				'Institut xotin - qizlar maslahat kengashi',
-				"Ta'lim sifatini nazorat qilish bo’limi",
-				'Xalqaro hamkorlik bo’limi',
-				"Sirtqi bo'lim",
-				"O'quv uslubiy boshqarma",
-				'Marketing va talabalar amaliyoti bo’limi',
-				"Magistratura bo'limi",
-				'Iqtidorli talabalarning ilmiy-tadqiqot faoliyatini tashkil etish bo‘limi',
-				"Yoshlar bilan ishlash, ma'naviyat va ma'rifat bo'limi",
-				'Ilmiy va ilmiy pedagogik kadrlar tayyorlash',
-				"Xodimlar bo'limi",
-				"Devonxona bo'limi",
-				'Axbоrоt-resurs markazi',
-			],
-		},
-		{
-			title: "Bo'limi turi",
-			values: [
-				'Boshqa',
-				"Bo'lim",
-				'Boshqarma',
-				'Markaz',
-				'Rektorat',
-				'Boshqa',
-				"Bo'lim",
-				'Boshqarma',
-				'Markaz',
-				'Rektorat',
-				'Boshqa',
-				"Bo'lim",
-				'Boshqarma',
-				'Markaz',
-				'Rektorat',
-				'Boshqa',
-				"Bo'lim",
-				'Boshqarma',
-				'Markaz',
-				'Rektorat',
-				'Boshqa',
-				"Bo'lim",
-				'Boshqarma',
-				'Markaz',
-				'Boshqarma',
-				'Markaz',
-				'Rektorat',
-			],
-		},
-		{
-			title: 'Faol',
-			width: '20px',
-			values: [
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-			],
-		},
-	]
+
+	useEffect(() => {
+		axios.get(`${MAIN_URL}/divisions/`).then(res => {
+			setGetData(res.data)
+		})
+	}, [])
+
+	const handleSubmit = async (values: { name: string; code: string; type: string }) => {
+		try {
+			const response = await axios.post(`${MAIN_URL}/divisions/`, values)
+			console.log('Data submitted successfully:', response.data)
+			// Optionally, you can update the state or perform any other actions here
+		} catch (error) {
+			console.error('Error submitting data:', error)
+		}
+	}
 
 	return (
 		<>
@@ -163,28 +54,62 @@ export const Devision: FC = () => {
 			</div>
 			<div className='layout'>
 				<div className='right'>
-					<SimpleTable style='100%' tableData={TableData} />
+					<ScrollArea
+						h={'100dvh'}
+						onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+					>
+						<Table striped highlightOnHover withTableBorder withColumnBorders>
+							<Table.Thead className={cx('header', { ['scrolled']: scrolled })}>
+								<Table.Tr>
+									<Table.Th style={{ textAlign: 'center' }}>ID raqami</Table.Th>
+									<Table.Th style={{ textAlign: 'center' }}>Nomi</Table.Th>
+									<Table.Th style={{ textAlign: 'center' }}> Turi </Table.Th>
+									<Table.Th style={{ textAlign: 'center', width: '20px' }}>
+										status{' '}
+									</Table.Th>
+								</Table.Tr>
+							</Table.Thead>
+							<Table.Tbody>
+								{getData.map((el: any) => (
+									<Table.Tr style={{ textAlign: 'center' }} key={el.user_id}>
+										<Table.Td>{el.code}</Table.Td>
+										<Table.Td>{el.name}</Table.Td>
+										<Table.Td>{el.type}</Table.Td>
+										<Table.Td style={{ width: '20px' }}>
+											<SwitchThumbButton checked={el.active}  />
+										</Table.Td>
+									</Table.Tr>
+								))}
+							</Table.Tbody>
+						</Table>
+					</ScrollArea>
 				</div>
 				<div className='left'>
-					<div className='create_change'>
+					<form className='create_change' onSubmit={form.onSubmit(handleSubmit)}>
 						<div className='line'>
 							<p>Nomi</p>
-							<Input placeholder="Bo'lim nomini  kiriting" />
+							<Input
+								placeholder="Bo'lim nomini kiriting"
+								{...form.getInputProps('name')}
+							/>
 						</div>
 						<div className='line'>
 							<p>Kod</p>
 							<Input
 								placeholder="Bo'lim kodini kiriting"
-								value={code}
-								onChange={e => handleChange({ e, setCode, count: 2 })}
+								{...form.getInputProps('code')}
 							/>
 						</div>
 						<div className='line'>
 							<p>Turi</p>
-							{/* <DynamicSelect label='' data={data} placeholder="Bo'lim turi"  /> */}
+							{/* <Input
+								placeholder='Turini tanlang'
+								{...form.getInputProps('type')}
+							/> */}
+							<DynamicSelect data={} />
 						</div>
 						{!changeDevision ? (
-							<Button>
+							<Button type="submit">
 								<IconCheck />
 								Saqlash
 							</Button>
@@ -197,13 +122,13 @@ export const Devision: FC = () => {
 								<Button color='red'>
 									<IconTrash /> Ochirish
 								</Button>
-								<Button>
+								<Button type="submit">
 									<IconCheck />
 									Saqlash
 								</Button>
 							</div>
 						)}
-					</div>
+					</form>
 				</div>
 			</div>
 		</>

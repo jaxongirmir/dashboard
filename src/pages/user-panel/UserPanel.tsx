@@ -4,7 +4,6 @@ import axios from 'axios'
 import cx from 'clsx'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { SwitchThumbButton } from '../../ui/buttons/SwitchThumbButton'
 import { DynamicInputDatapciker } from '../../ui/dynamic-input-datapicker/DynamicInputDatapicker'
 import { DynamicModal } from '../../ui/dynamic-modal/DynamicModal'
 import { DynamicSelect } from '../../ui/dynamic-select/DynamicSelect'
@@ -348,9 +347,9 @@ export const UserPanel = () => {
 								<Table.Td>{`${el.last_name} ${el.first_name} ${el.middle_name}`}</Table.Td>
 								<Table.Td>{el.birth_date}</Table.Td>
 								<Table.Td>{el.passport}</Table.Td>
-								<Table.Td>
+								{/* <Table.Td>
 									<SwitchThumbButton />
-								</Table.Td>
+								</Table.Td> */}
 							</Table.Tr>
 						))}
 					</Table.Tbody>

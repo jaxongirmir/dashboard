@@ -1,26 +1,23 @@
-import { Button, Input } from '@mantine/core'
+import { Button, Input, ScrollArea, Table } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { IconCheck, IconTrash, IconX } from '@tabler/icons-react'
 import axios from 'axios'
+import cx from 'clsx'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { SimpleTable } from '../../components/simple-table/SimpleTable'
 import { SwitchThumbButton } from '../../ui/buttons/SwitchThumbButton'
 import { DynamicSelect } from '../../ui/dynamic-select/DynamicSelect'
 import { MAIN_URL } from '../../url/url'
 
 type TData = string[]
-type TTableData = {
-	title: string
-	values: (string | JSX.Element)[]
-	width?: string
-}[]
-
 export const Faculty = () => {
 	const { pathname } = useLocation()
 
 	const data: TData = ['Mahalliy', 'Qo‘shma', 'Bo‘lim', 'Boshqa']
 	const [changeFaculty, setChangeFaculty] = useState<boolean>(false)
+	const [scrolled, setScrolled] = useState<boolean>(false)
+	const [getData, setGetData] = useState<any>([])
+	const [status, setStatus] = useState<boolean>(false)
 
 	const form = useForm({
 		initialValues: {
@@ -34,137 +31,6 @@ export const Faculty = () => {
 		setChangeFaculty(false)
 	}, [])
 
-	const TableData: TTableData = [
-		{
-			title: 'Kod',
-			values: [
-				'222',
-				'123',
-				'121',
-				'002',
-				'321',
-				'213',
-				'645',
-				'237',
-				'222',
-				'123',
-				'121',
-				'002',
-				'321',
-				'213',
-				'645',
-				'237',
-				'222',
-				'123',
-				'121',
-				'002',
-				'321',
-				'213',
-				'645',
-				'237',
-				'222',
-				'237',
-				'222',
-			],
-		},
-		{
-			title: 'Nomi',
-			values: [
-				'Menejment',
-				'Kompyuter Injenering',
-				'Dasturiy Injeneriya',
-				'Menejment',
-				'Kompyuter Injenering',
-				'Dasturiy Injeneriya',
-				'Menejment',
-				'Kompyuter Injenering',
-				'Dasturiy Injeneriya',
-				'Menejment',
-				'Kompyuter Injenering',
-				'Dasturiy Injeneriya',
-				'Menejment',
-				'Kompyuter Injenering',
-				'Dasturiy Injeneriya',
-				'Menejment',
-				'Kompyuter Injenering',
-				'Dasturiy Injeneriya',
-				'Menejment',
-				'Kompyuter Injenering',
-				'Dasturiy Injeneriya',
-				'Menejment',
-				'Kompyuter Injenering',
-				'Dasturiy Injeneriya',
-				'Menejment',
-				'Kompyuter Injenering',
-				'Dasturiy Injeneriya',
-			],
-		},
-		{
-			title: 'Turi',
-			values: [
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-				'Mahaliy',
-			],
-		},
-		{
-			title: 'Faol',
-			width: '20px',
-			values: [
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-				<SwitchThumbButton />,
-			],
-		},
-	]
 	const first = (type: any) => {
 		switch (type) {
 			case 'Mahalliy':
@@ -179,22 +45,40 @@ export const Faculty = () => {
 				break
 		}
 	}
+	const engToRu = (type: any) => {
+		switch (type) {
+			case 'joint':
+				return "Qo'shma"
+			case 'local':
+				return 'Mahalliy'
+			case 'division':
+				return "Bo'lim"
+			case 'other':
+				return 'Boshqa'
+			default:
+				break
+		}
+	}
 
 	const handleSubmit = (values: any) => {
-		console.log('Form values:', values)
 		const facultyData = {
 			name: values.name,
 			code: values.code,
 			type: first(values.type),
 		}
 		// Add your form submission logic here
-		axios.post(`${MAIN_URL}/faculties/`, facultyData).then(res => {
-			console.log(res)
+		axios.post(`${MAIN_URL}/faculties/`, facultyData).then(() => {
 			values.name = ''
 			values.code = ''
 			values.type = ''
+			setStatus(v => !v)
 		})
 	}
+	useEffect(() => {
+		axios.get(`${MAIN_URL}/faculties/`).then(res => {
+			setGetData(res.data)
+		})
+	}, [status])
 
 	return (
 		<>
@@ -206,7 +90,35 @@ export const Faculty = () => {
 			</div>
 			<div className='layout'>
 				<div className='right'>
-					<SimpleTable style='100%' tableData={TableData} />
+					<ScrollArea
+						h={'100dvh'}
+						onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+					>
+						<Table striped highlightOnHover withTableBorder withColumnBorders>
+							<Table.Thead className={cx('header', { ['scrolled']: scrolled })}>
+								<Table.Tr>
+									<Table.Th style={{ textAlign: 'center' }}>ID raqami</Table.Th>
+									<Table.Th style={{ textAlign: 'center' }}>Nomi</Table.Th>
+									<Table.Th style={{ textAlign: 'center' }}> Turi </Table.Th>
+									<Table.Th style={{ textAlign: 'center', width: '20px' }}>
+										status{' '}
+									</Table.Th>
+								</Table.Tr>
+							</Table.Thead>
+							<Table.Tbody>
+								{getData.map((el: any) => (
+									<Table.Tr style={{ textAlign: 'center' }} key={el.user_id}>
+										<Table.Td>{el.code}</Table.Td>
+										<Table.Td>{el.name}</Table.Td>
+										<Table.Td>{engToRu(el.type)}</Table.Td>
+										<Table.Td style={{ width: '20px' }}>
+											<SwitchThumbButton checked={el.active} />
+										</Table.Td>
+									</Table.Tr>
+								))}
+							</Table.Tbody>
+						</Table>
+					</ScrollArea>
 				</div>
 				<div className='left'>
 					<form
